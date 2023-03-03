@@ -11,7 +11,7 @@ reducers: {
     },
 },
 });
-export const loginAction = loginSlice.actions
+export const loginActions = loginSlice.actions
 export const store = configureStore({
     reducer: loginSlice.reducer
 })
