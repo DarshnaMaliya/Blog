@@ -64,16 +64,18 @@ export const updateBlog = async (req, res, next) => {
     return res.status(200).json({ blog });
 }
 
-export const getById = async (req, res, next) => {
+export const getById = async(req, res, next) => {
     const id = req.params.id;
+    console.log(id);
     let blog;
     try {
         blog = await blogSchema.findById(id).populate('user');
+        //console.log(blog);
     } catch (err) {
         return console.log(err)
     }
     if (!blog) {
-        return res.status(500).json({ message: "Unable to find blog by this id" });
+        return res.status(404).json({ message: "Unable to find blog by this id" });
     }
     return res.status(200).json({ blog });
 }
@@ -94,11 +96,11 @@ export const deleteBlog = async (req, res, next) => {
 }
 export const getByUserId = async (req, res, next) => {
     const userId = req.params.id;
-    console.log(userId);
+    //console.log(userId);
     let userBlogs;
     try {
         userBlogs = await userSchema.findById(userId).populate('blogs');
-        console.log(userBlogs);
+        //console.log(userBlogs);
     } catch (err) {
         return console.log(err);
     }

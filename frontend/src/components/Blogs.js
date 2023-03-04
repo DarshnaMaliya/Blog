@@ -15,7 +15,10 @@ sendRequest().then((data) => setBlogs(data.blogs));
     console.log(blogs)
     return(<div>
         { blogs && blogs.map((blog, index) => {
-        return <Blog title={blog.title} description={blog.description} image={blog.image} user={blog.user.name}/>
+        return <Blog
+        id = {blog._id} 
+        isUser = {localStorage.getItem("userId") === blog.user._id}
+        title={blog.title} description={blog.description} image={blog.image} user={blog.user.name}/>
         })     
         }      
     </div>);
