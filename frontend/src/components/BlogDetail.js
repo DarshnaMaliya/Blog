@@ -1,13 +1,17 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useEffect } from "react";
 import {Box, TextField, Button, InputLabel, Typography} from "@mui/material";
 const BlogDetail = () => {
+    const navigate = useNavigate();
     const[blog, setBlog] = useState();
     const id = useParams().id;
     console.log(id);
-    const [inputs, setInputs] = useState();
+    const [inputs, setInputs] = useState({
+        title:"",
+        description:""
+    });
     const handleChange = (e) => {
         setInputs((prevState) => ({
             ...prevState,
@@ -41,7 +45,7 @@ const BlogDetail = () => {
     const handleSubmit=(e) => {
         e.preventDefault();
         console.log(inputs);
-        sendRequest().then(data => console.log(data));
+        sendRequest().then(data => console.log(data)).then(navigate("/")).then(navigate('/blogs/'));
     };
 return(
     <div>
@@ -54,7 +58,7 @@ return(
                 <TextField name="title" value={inputs.title} onChange={handleChange} margin="normal" variant="outlined"/>
                 <InputLabel sx={{mb:1, mt:2, fontSize:'24px', fontWeight:'bold'}}>Description</InputLabel>
                 <TextField name="description" value={inputs.description} onChange={handleChange} margin="normal" variant="outlined"/>
-                <Button type="submit" variant="contained" color="warning" sx={{mt:2, bordereRadius:4}}> Add Blog</Button>
+                <Button type="submit" variant="contained" color="warning" sx={{mt:2, bordereRadius:4}}> Update Blog</Button>
             </Box>
         </form>
     </div>

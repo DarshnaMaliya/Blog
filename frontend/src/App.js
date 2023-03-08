@@ -17,11 +17,12 @@ function App() {
       </header>
       <main>
         <Routes>
-          <Route path="/login" element={<Login />} />
+          { !isLoggedIn ? <Route path="/login" element={<Login />} /> :
+          <>
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/blogs/add" element={<AddBlog />} />
           <Route path="/myblogs" element={<UserBlogs />} />
-          <Route path="/myblogs/:id" element={<BlogDetail />} />
+          <Route path="/myblogs/:id" element={<BlogDetail />} /> </>}
           
         </Routes>
       </main> 

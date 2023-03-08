@@ -1,8 +1,10 @@
 import { InputLabel, TextField, Typography , Box, Button} from "@mui/material";
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const AddBlog = () => {
+    const navigate = useNavigate();
     const [inputs, setInputs] = useState({
         title :"",
         description:"",
@@ -17,7 +19,7 @@ const AddBlog = () => {
     const handleSubmit = (e) => {
 e.preventDefault();
 console.log(inputs);
-sendRequest().then(data=> console.log(data));
+sendRequest().then(data=> console.log(data)).then(navigate("/blogs"));
     };
     const sendRequest = async () => {
         const res = await axios.post("http://localhost:5010/api/blog/add", {
