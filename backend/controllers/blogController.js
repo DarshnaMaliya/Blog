@@ -109,4 +109,40 @@ export const getByUserId = async (req, res, next) => {
     }
     return res.status(200).json({ user: userBlogs });
 }
+
+export const getLike = async (req, res, next) => {
+    let blog;
+    let blogId = req.body.id;
+  
+    blog = await blogSchema.findByIdAndUpdate(blogId , {
+        $push : {likes : req.user._id}},
+        {
+        new : true
+    }).populate('user').exec((err, result) => {
+        if(err) {
+            return res.status(430).json({error : err});
+        } else
+        {
+            return res.json(result);
+        }
+    })
+//     await blog.likes.push(req.user._id);
+    
+// }
+//     catch (err) {
+//         return console.log(err);
+//     }
+//     // if (!blog) {
+//     //     return res.status(500).json({ message: "unable to delete" });
+//     // }
+//     return res.status(200).json({ message: "liked successfully" });
+
+//         // await blog.user.save();
+
+    //     {
+    // $push:{likes:req.user.id}},{
+    //     new:true
+    // })
+    //console.log(blog);
+}
 export default getAllBlogs;

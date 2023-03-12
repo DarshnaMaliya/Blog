@@ -1,12 +1,19 @@
-import React from "react";
-import { Typography, Card, CardContent, CardMedia, CardHeader, Avatar, IconButton, Box, Button, TextField} from "@mui/material";
+import React, { useState } from "react";
+import { Typography, Card, CardContent, CardMedia, CardHeader, Avatar, IconButton, Box} from "@mui/material";
 import BorderColorTwoToneIcon from '@mui/icons-material/BorderColorTwoTone';
 import DeleteOutlineTwoToneIcon from '@mui/icons-material/DeleteOutlineTwoTone';
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-const Blog = ({title, description, image, user, isUser, id }) => {
-  const navigate = useNavigate();
+import Comments from "./Comments";
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 
+const Blog = ({title, description, image, user, isUser, id, likes }) => {
+const navigate = useNavigate();
+
+// const[like,setLike] = useState(likes);
+ const [isLike, setIsLike] = useState(false);
+
+// console.log(likes);
 const handleEdit =() => {
 navigate(`/myblogs/${id}`);
   }
@@ -19,6 +26,18 @@ const deleteRequest = async () => {
   deleteRequest().then((data)=>console.log(data));
   }
   console.log(title,isUser,id);
+  const likePost = async (id) => {
+  const res = await axios.put("http://localhost:5010/api/blog/like").catch(err => console.log(err));
+  const data = res.data;
+  return data;
+}
+const handleClick = () => {
+  // // setLike(like + (isLike? -1:1));
+  // isLike ? 
+  // likes = likes - 1: likes = likes + 1;
+  // setIsLike(!isLike);
+  likePost(id).then((data) => setIsLike(!isLike));
+}
     return <div>
         {" "}
         <Card sx={{ width: "40%" , margin:'auto', mt:2, padding:2, boxShadow:"5px 5px 10px #ccc",
@@ -50,14 +69,17 @@ const deleteRequest = async () => {
         <br />
         <Typography variant="body2" color="text.secondary">
            {user} { ":" }{description} 
+           
         </Typography>
-      </CardContent>
-    </Card>
-    <Box sx={{ width: "40%" , margin:'auto', mt:2, padding:2, boxShadow:"5px 5px 10px #ccc"}} display="flex" flexDirection={"row"}>
-      {/* <TextareaAutosize placeholder="whats on your mind"></TextareaAutosize> */}
-      <TextField fullWidth placeholder="whats on your mind" />
-      <Button variant="contained" sx={{marginLeft:"auto"}}>post</Button>
-    </Box>
+          <br />
+          {isLike ? <ThumbUpOffAltIcon sx={{ marginLeft: "10px" }} color="grey" onClick={handleClick} /> :
+            <ThumbUpOffAltIcon sx={{ marginLeft: "10px" }} color="primary" onClick={handleClick} />
+          }
+          <p>Likes : {likes} </p>
+  </CardContent>
+      </Card>
+   
+    <Comments/>
     </div>
 };
 

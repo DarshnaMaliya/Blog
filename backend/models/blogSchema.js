@@ -19,7 +19,9 @@ const blogSchema = new Schema ({
         type : mongoose.Types.ObjectId,
         ref:"BlogUser",
         required : true
-    }
+    },
+    likes: [{type : mongoose.Schema.Types.ObjectId, ref : "BlogUser"}]
+         
 });
 
 export default mongoose.model("Blog", blogSchema);
