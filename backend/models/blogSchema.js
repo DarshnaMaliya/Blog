@@ -16,11 +16,18 @@ const blogSchema = new Schema ({
         required: true
     },
     user : {
-        type : mongoose.Types.ObjectId,
+        type : mongoose.Schema.Types.ObjectId,
         ref:"BlogUser",
         required : true
     },
-    likes: [{type : mongoose.Schema.Types.ObjectId, ref : "BlogUser"}]
+    likes: [{type : mongoose.Schema.Types.ObjectId, ref : "BlogUser"}],
+    startdate : {
+        type: Date,
+        default : Date.now
+    }, 
+    enddate : {
+        type:Date
+    }  
          
 });
 

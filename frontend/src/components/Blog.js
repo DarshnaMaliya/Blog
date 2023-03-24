@@ -11,7 +11,7 @@ const Blog = ({title, description, image, user, isUser, id, likes }) => {
 const navigate = useNavigate();
 
 // const[like,setLike] = useState(likes);
- const [isLike, setIsLike] = useState(false);
+ const [isLike, setIsLike] = useState(null);
 
 // console.log(likes);
 const handleEdit =() => {
@@ -26,17 +26,30 @@ const deleteRequest = async () => {
   deleteRequest().then((data)=>console.log(data));
   }
   console.log(title,isUser,id);
-  const likePost = async (id) => {
-  const res = await axios.put("http://localhost:5010/api/blog/like").catch(err => console.log(err));
+
+  const likePost = async () => {
+  const res = await axios.put(`http://localhost:5010/api/blog/like/${id}`).catch(err => console.log(err));
   const data = res.data;
-  return data;
+  //return data;
+  console.log(data);
+}
+
+const UnlikePost = async () => {
+  const res = await axios.put(`http://localhost:5010/api/blog/unlike/${id}`).catch(err => console.log(err));
+  const data = res.data;
+  //return data;
+  console.log(data);
 }
 const handleClick = () => {
-  // // setLike(like + (isLike? -1:1));
+  // setLike(like + (isLike? -1:1));
   // isLike ? 
-  // likes = likes - 1: likes = likes + 1;
-  // setIsLike(!isLike);
-  likePost(id).then((data) => setIsLike(!isLike));
+  // likes = likes - 1: 
+  // likes = likes + 1;
+ // setIsLike(!isLike);
+  (!isLike) ?
+  likePost().then((data) => setIsLike(!isLike))
+  :
+  UnlikePost().then((data) => setIsLike(!isLike))
 }
     return <div>
         {" "}
@@ -72,10 +85,10 @@ const handleClick = () => {
            
         </Typography>
           <br />
-          {isLike ? <ThumbUpOffAltIcon sx={{ marginLeft: "10px" }} color="grey" onClick={handleClick} /> :
-            <ThumbUpOffAltIcon sx={{ marginLeft: "10px" }} color="primary" onClick={handleClick} />
+          {!isLike ? <ThumbUpOffAltIcon sx={{ marginLeft: "10px" }} color="primary" onClick={handleClick} /> :
+            <ThumbUpOffAltIcon sx={{ marginLeft: "10px" }} color="grey" onClick={handleClick} />
           }
-          <p>Likes : {likes} </p>
+          <span> Likes : {likes} </span>
   </CardContent>
       </Card>
    

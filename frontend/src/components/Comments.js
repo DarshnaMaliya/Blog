@@ -10,7 +10,7 @@ const Comments = () => {
         
 <Box sx={{ width: "40%" , margin:'auto', mt:2, padding:2, boxShadow:"5px 5px 10px #ccc"}} display="flex" flexDirection={"row"}>
 
-            <TextField fullWidth placeholder="whats on your mind" />
+    <TextField fullWidth placeholder="whats on your mind" />
       <Button variant="contained" sx={{marginLeft:"10px"}} onClick={handleComment}>post</Button>
       {/* <ThumbUpOffAltIcon sx={{marginLeft:"10px"}}/> */}
     </Box>

@@ -29,6 +29,7 @@ const BlogDetail = () => {
         setInputs({
             title:data.blog.title,
             description:data.blog.description,
+            image:data.blog.image
         });
 
     });
@@ -36,7 +37,8 @@ const BlogDetail = () => {
     const sendRequest = async () => {
         const res = axios.put(`http://localhost:5010/api/blog/update/${id}`, {
             title : inputs.title,
-            description : inputs.description
+            description : inputs.description,
+            image:inputs.image
         }).cathc(err=>console.log(err));
         const data = await res.data;
         return data;
@@ -58,6 +60,8 @@ return(
                 <TextField name="title" value={inputs.title} onChange={handleChange} margin="normal" variant="outlined"/>
                 <InputLabel sx={{mb:1, mt:2, fontSize:'24px', fontWeight:'bold'}}>Description</InputLabel>
                 <TextField name="description" value={inputs.description} onChange={handleChange} margin="normal" variant="outlined"/>
+                <InputLabel sx={{mb:1, mt:2, fontSize:'24px', fontWeight:'bold'}}>Image</InputLabel>
+                <TextField name="image" value={inputs.image} onChange={handleChange} margin="normal" variant="outlined"/>
                 <Button type="submit" variant="contained" color="warning" sx={{mt:2, bordereRadius:4}}> Update Blog</Button>
             </Box>
         </form>
