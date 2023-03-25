@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
+import exceljs from "exceljs";
 import blogSchema from "../models/blogSchema.js";
 import userSchema from "../models/userSchema.js";
 import BlogUser from "../models/userSchema.js";
+import moment from "moment/moment.js";
 
 const getAllBlogs = async (req, res, next) => {
     let blogs;
@@ -128,11 +130,6 @@ export const getLike = async (req, res, next) => {
         }
     })
 }
-    
-// // }
-// //    
-
-
 export const getUnlike = async (req, res, next) => {
     let blog;
     let blogId = req.body.id;
@@ -188,4 +185,89 @@ export const getUnlike = async (req, res, next) => {
 //         console.log(err);
 //     }
 // }
+
+//to export excel file
+// export const exportFile1 = async (req, res, next) => {
+//     // let startdate = req.params.startdate;
+//     // let enddate = req.params.enddate;
+//     try {
+//         const blogs = await blogSchema.find();
+//         const workbook = new exceljs.Workbook();
+//         const worksheet = workbook.addWorksheet("blogList1");
+//         worksheet.columns = [
+//             {header : "Sr no.", key: "sr_no"},
+//             {header : "title", key: "title"},
+//             {header : "description", key: "description"},
+//             {header : "image", key: "image"},
+//             {header : "User", key: "user"},
+//             {header : "Likes", key: "Likes"},
+//             {header : "Create-Date", key: "startDate"}
+//         ];
+// let count = 1;
+// console.log(blogs);
+// blogs.forEach((b) => {
+//     b.sr_no = count;
+//     worksheet.addRow(b);
+//      count++;
+// })
+// worksheet.getRow(1).eachCell((cell)=> {
+//     cell.font = {bold : true};
+// });
+// const data1 = await workbook.xlsx.writeFile('blogdata.xlsx');
+// res.send("done");
+
+//     } catch (err) {
+//         return console.log(err)
+//     }
+
+// }
+// res.setHeader(
+//     "Content-type",
+//     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+// );
+
+// res.setHeader("content-Disposition", `attachment; filename=blogList.xlsx`);
+
+// return workbook.xlsx.write(res).then(()=> {
+//     res.status(200);
+// });
+
+
+export const getAllInFile = async (req, res, next) => {
+    let blogs;
+    try {
+        const startDate = moment(new Date()).startOf('month').toDate();
+        const endDate = moment(new Date()).endOf('month').toDate();
+        blogs = await blogSchema.find({created_at:{$gte: startDate, $lte: endDate}}).populate("user");
+                const workbook = new exceljs.Workbook();
+        const worksheet = workbook.addWorksheet("blogList1");
+        worksheet.columns = [
+            {header : "Sr no.", key: "sr_no"},
+            {header : "title", key: "title"},
+            {header : "description", key: "description", width: 20},
+            // {header : "image", key: "image"},
+            {header : "User", key: "user", width:100},
+            // {header : "Likes", key: "Likes"},
+            {header : "startDate", key: "startDate"}
+        ];
+let count = 1;
+console.log(blogs);
+blogs.forEach((b) => {
+    b.sr_no = count;
+    worksheet.addRow(b);
+     count++;
+})
+worksheet.getRow(1).eachCell((cell)=> {
+    cell.font = {bold : true};
+});
+const data1 = await workbook.xlsx.writeFile('blogdata.xlsx');
+res.send("done");
+    } catch (err) {
+        return console.log(err);
+    }
+    if (!blogs) {
+        return res.status(404).json({ message: "no blogs found" });
+    }
+    return res.status(200).json({ blogs });
+};
 export default getAllBlogs; 

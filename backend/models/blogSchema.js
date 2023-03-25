@@ -16,19 +16,16 @@ const blogSchema = new Schema ({
         required: true
     },
     user : {
-        type : mongoose.Schema.Types.ObjectId,
+        type : mongoose.Types.ObjectId,
         ref:"BlogUser",
         required : true
     },
-    likes: [{type : mongoose.Schema.Types.ObjectId, ref : "BlogUser"}],
+    likes: [{type : mongoose.Types.ObjectId, ref : "BlogUser"}],
     startdate : {
         type: Date,
-        default : Date.now
-    }, 
-    enddate : {
-        type:Date
-    }  
-         
+        default : Date.now,
+        timestamp: true
+    }
 });
 
 export default mongoose.model("Blog", blogSchema);
